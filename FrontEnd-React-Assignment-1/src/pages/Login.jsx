@@ -94,7 +94,7 @@ const Login = () => {
                 <span className="text-white font-bold text-2xl">📚</span>
               </div>
               <span className="mt-3 text-2xl font-bold text-gray-900">
-                DocuFlow<span className="text-blue-600"> Pro</span>
+                Document Optimizer
               </span>
             </div>
             <h2 className="mt-6 text-3xl font-bold text-gray-900">

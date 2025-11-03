@@ -150,7 +150,7 @@ const Dashboard = () => {
               📚
             </div>
             <div>
-              <div className="text-lg font-bold text-gray-900">DocuFlow</div>
+              <div className="text-lg font-bold text-gray-900">Document Optimizer</div>
               <div className="text-xs text-gray-500">Professional Suite</div>
             </div>
           </div>

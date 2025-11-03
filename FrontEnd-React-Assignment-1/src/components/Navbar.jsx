@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useAuth } from '../contexts/AuthContext';
-import { LogOut, User, Settings, Menu, X } from 'lucide-react';
+// Icons removed from navbar buttons; no external icon imports needed
 import HealthBadge from './HealthBadge';
 
 const Navbar = () => {
@@ -13,11 +13,11 @@ const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth();
 
   const navigation = [
-    { name: '🏠 Home', href: '/', shortName: 'Home' },
-    ...(isAuthenticated ? [{ name: '📊 Dashboard', href: '/dashboard', shortName: 'Dashboard' }] : []),
-    { name: '⚙️ Services', href: '/services', shortName: 'Services' },
-    { name: '👥 About', href: '/about', shortName: 'About' },
-    { name: '📞 Contact', href: '/contact', shortName: 'Contact' },
+    { name: 'Home', href: '/', shortName: 'Home' },
+    ...(isAuthenticated ? [{ name: 'Dashboard', href: '/dashboard', shortName: 'Dashboard' }] : []),
+    { name: 'Services', href: '/services', shortName: 'Services' },
+    { name: 'About', href: '/about', shortName: 'About' },
+    { name: 'Contact', href: '/contact', shortName: 'Contact' },
   ];
 
   const isActive = (path) => {
@@ -29,7 +29,7 @@ const Navbar = () => {
       await logout();
       toast.success('Logged out successfully! 👋');
       navigate('/');
-    } catch (error) {
+    } catch {
       toast.error('Logout failed');
     }
     setUserMenuOpen(false);
@@ -45,10 +45,10 @@ const Navbar = () => {
                 <span className="text-white font-bold text-lg">📚</span>
               </div>
               <span className="ml-3 text-xl font-bold text-gray-900 hidden sm:block">
-                DocuFlow<span className="text-blue-600"> Pro</span>
+                Document Optimizer
               </span>
               <span className="ml-3 text-lg font-bold text-gray-900 sm:hidden">
-                DocuFlow
+                Document Optimizer
               </span>
             </Link>
           </div>
@@ -78,7 +78,7 @@ const Navbar = () => {
                   <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm">
                     {user?.firstName?.charAt(0) || user?.name?.charAt(0) || 'U'}
                   </div>
-                  <span className="hidden lg:inline">👋 Hi, {user?.firstName || user?.name || 'User'}</span>
+                  <span className="hidden lg:inline">Hi, {user?.firstName || user?.name || 'User'}</span>
                   <span className="lg:hidden">Menu</span>
                   <svg className={`w-4 h-4 transition-transform ${userMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -88,7 +88,7 @@ const Navbar = () => {
                 {userMenuOpen && (
                   <div className="absolute right-0 mt-2 w-56 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl py-2 z-50 border border-gray-200">
                     <div className="px-4 py-3 border-b border-gray-100">
-                      <p className="text-sm font-medium text-gray-900">👤 {user?.firstName || user?.name || 'User'}</p>
+                      <p className="text-sm font-medium text-gray-900">{user?.firstName || user?.name || 'User'}</p>
                       <p className="text-xs text-gray-500">{user?.email || 'user@example.com'}</p>
                     </div>
                     <Link
@@ -96,7 +96,6 @@ const Navbar = () => {
                       className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
                       onClick={() => setUserMenuOpen(false)}
                     >
-                      <span className="mr-3">📊</span>
                       Dashboard
                     </Link>
                     <Link
@@ -104,7 +103,6 @@ const Navbar = () => {
                       className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
                       onClick={() => setUserMenuOpen(false)}
                     >
-                      <span className="mr-3">⚙️</span>
                       Settings
                     </Link>
                     <div className="border-t border-gray-100 mt-2 pt-2">
@@ -112,7 +110,6 @@ const Navbar = () => {
                         onClick={handleLogout}
                         className="flex items-center w-full px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors"
                       >
-                        <span className="mr-3">🚪</span>
                         Sign Out
                       </button>
                     </div>
@@ -122,10 +119,10 @@ const Navbar = () => {
             ) : (
               <>
                 <Link to="/login" className="text-gray-700 hover:text-blue-600 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-blue-50">
-                  🔑 Log In
+                  Log In
                 </Link>
                 <Link to="/signup" className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-xl font-medium hover:shadow-lg transition-all duration-200 transform hover:scale-105">
-                  ✨ Sign Up
+                  Sign Up
                 </Link>
               </>
             )}
@@ -148,9 +145,9 @@ const Navbar = () => {
               aria-label={isOpen ? 'Close main menu' : 'Open main menu'}
             >
               {!isOpen ? (
-                <Menu className="h-6 w-6" />
+                <span className="text-sm font-medium">Menu</span>
               ) : (
-                <X className="h-6 w-6" />
+                <span className="text-sm font-medium">Close</span>
               )}
             </button>
           </div>
@@ -179,7 +176,7 @@ const Navbar = () => {
             {isAuthenticated ? (
               <>
                 <div className="px-4 py-3 text-base font-medium text-gray-900 border-t border-gray-200 mt-4 pt-4 bg-gray-50 rounded-xl">
-                  👋 Hi, {user?.firstName || user?.name || 'User'}!
+                  Hi, {user?.firstName || user?.name || 'User'}!
                   <div className="text-sm text-gray-500 mt-1">{user?.email || 'user@example.com'}</div>
                 </div>
                 <Link 
@@ -187,7 +184,6 @@ const Navbar = () => {
                   className="flex items-center px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200" 
                   onClick={() => setIsOpen(false)}
                 >
-                  <span className="mr-3">⚙️</span>
                   Settings
                 </Link>
                 <button 
@@ -197,7 +193,6 @@ const Navbar = () => {
                   }}
                   className="flex items-center w-full text-left px-4 py-3 rounded-xl text-base font-medium text-red-600 hover:bg-red-50 transition-all duration-200"
                 >
-                  <span className="mr-3">🚪</span>
                   Sign Out
                 </button>
               </>
@@ -208,7 +203,6 @@ const Navbar = () => {
                   className="flex items-center px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 border-t border-gray-200 mt-4 pt-4" 
                   onClick={() => setIsOpen(false)}
                 >
-                  <span className="mr-3">🔑</span>
                   Log In
                 </Link>
                 <Link 
@@ -216,7 +210,6 @@ const Navbar = () => {
                   className="flex items-center px-4 py-3 rounded-xl text-base font-medium bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg transition-all duration-200 transform hover:scale-105" 
                   onClick={() => setIsOpen(false)}
                 >
-                  <span className="mr-3">✨</span>
                   Sign Up
                 </Link>
               </>

@@ -96,7 +96,7 @@ const Home = () => {
               <h1 className="text-4xl font-bold text-gray-900 tracking-tight sm:text-5xl lg:text-6xl">
                 <span className="block">Transform Your</span>
                 <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  📚 Documents
+                  Documents
                 </span>
                 <span className="block">with AI Power</span>
               </h1>
@@ -283,7 +283,7 @@ const Home = () => {
             transition={{ delay: 0.4 }}
             className="mt-6 text-xl text-blue-100 max-w-2xl mx-auto"
           >
-            Join thousands of professionals who trust DocuFlow Pro to streamline their document workflow and boost productivity.
+            Join thousands of professionals who trust Document Optimizer to streamline their document workflow and boost productivity.
           </motion.p>
           <motion.div 
             initial={{ opacity: 0, y: 20 }}

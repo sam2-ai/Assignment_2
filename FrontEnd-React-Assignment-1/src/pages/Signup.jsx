@@ -104,8 +104,8 @@ const Signup = () => {
         agreeToTerms: !!formData.agreeToTerms
       };
 
-      await register(payload);
-      toast.success('🎉 Account created successfully! Welcome to DocuFlow Pro!');
+  await register(payload);
+  toast.success('🎉 Account created successfully! Welcome to Document Optimizer!');
       navigate('/login');
     } catch (err) {
       if (err.response?.data?.errors) {
