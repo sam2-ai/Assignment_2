@@ -4,6 +4,8 @@
   "description": "testing backend project",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "test": "jest --runInBand"
   },
   "author": "",
@@ -14,7 +16,12 @@
     "mongoose": "^8.19.2",
     "bcrypt": "^5.1.0",
     "express-validator": "^7.0.1",
-    "jsonwebtoken": "^9.0.0"
+    "jsonwebtoken": "^9.0.0",
+    "dotenv": "^16.3.1",
+    "express-rate-limit": "^7.1.5",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "winston": "^3.11.0"
   }
   ,
   "devDependencies": {

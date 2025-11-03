@@ -1,7 +1,8 @@
+require('dotenv').config();
 const myMongoose = require('mongoose');
 
-// Allow overriding Mongo URI via env for tests or deployment
-const mongoURL = process.env.MONGO_URI || 'mongodb://localhost:27017/myDBTest';
+// Use environment variable for MongoDB URI
+const mongoURL = process.env.MONGODB_URI || 'mongodb://localhost:27017/document_optimizer';
 
 // Creating a function to connect to MongoDB
 const connectToMongo = async () => {

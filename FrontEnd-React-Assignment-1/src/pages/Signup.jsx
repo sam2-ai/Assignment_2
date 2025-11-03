@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { useAuth } from '../contexts/AuthContext';
 import { sanitizeInput } from '../utils/sanitizeInput';
 import { regEmailTest } from '../utils/regEmailTest';
 import { isAlphabetOnly } from '../utils/isAlphabetOnly';
 import { charLength } from '../utils/charLength';
-import { registerUser } from '../services/backend';
+import { Eye, EyeOff, UserPlus, Mail, Lock, User, Globe } from 'lucide-react';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -20,7 +22,10 @@ const Signup = () => {
   const [countryList, setCountryList] = useState([]);
   
   const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
+  const { register, isLoading, error } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -46,23 +51,35 @@ const Signup = () => {
     const password = sanitizeInput(data.password);
     const confirmPassword = sanitizeInput(data.confirmPassword);
 
-    if (!firstName) e.firstName = 'First name is required';
-    else if (isAlphabetOnly(firstName) === 0) e.firstName = 'Use letters only (one optional space)';
-    else if (charLength(firstName, 2, 35) === 0) e.firstName = 'First name length should be 2–35 chars';
+    // First name validation
+    if (!firstName) e.firstName = '👤 First name is required';
+    else if (isAlphabetOnly(firstName) === 0) e.firstName = '❌ Use letters only (one optional space)';
+    else if (charLength(firstName, 2, 35) === 0) e.firstName = '⚠️ First name should be 2–35 characters';
 
-    if (!lastName) e.lastName = 'Last name is required';
-    else if (isAlphabetOnly(lastName) === 0) e.lastName = 'Use letters only (one optional space)';
-    else if (charLength(lastName, 2, 35) === 0) e.lastName = 'Last name length should be 2–35 chars';
+    // Last name validation
+    if (!lastName) e.lastName = '👤 Last name is required';
+    else if (isAlphabetOnly(lastName) === 0) e.lastName = '❌ Use letters only (one optional space)';
+    else if (charLength(lastName, 2, 35) === 0) e.lastName = '⚠️ Last name should be 2–35 characters';
 
-    if (!email) e.email = 'Email is required';
-    else if (regEmailTest(email) === 0) e.email = 'Enter a valid email address';
+    // Email validation
+    if (!email) e.email = '📧 Email is required';
+    else if (regEmailTest(email) === 0) e.email = '❌ Please enter a valid email address';
+    else if (email.length > 254) e.email = '⚠️ Email address is too long';
 
-    if (!password) e.password = 'Password is required';
-    else if (charLength(password, 6, 128) === 0) e.password = 'Password must be at least 6 characters';
+    // Password validation
+    if (!password) e.password = '🔒 Password is required';
+    else if (charLength(password, 6, 128) === 0) e.password = '⚠️ Password must be at least 6 characters';
+    else if (password.length > 128) e.password = '⚠️ Password is too long (max 128 characters)';
+    else if (!/(?=.*[a-z])/.test(password)) e.password = '⚠️ Password must contain at least one lowercase letter';
+    else if (!/(?=.*[A-Z])/.test(password)) e.password = '⚠️ Password must contain at least one uppercase letter';
+    else if (!/(?=.*\d)/.test(password)) e.password = '⚠️ Password must contain at least one number';
 
-    if (password !== confirmPassword) e.confirmPassword = 'Passwords do not match';
+    // Confirm password validation
+    if (!confirmPassword) e.confirmPassword = '🔒 Please confirm your password';
+    else if (password !== confirmPassword) e.confirmPassword = '❌ Passwords do not match';
 
-    if (!data.agreeToTerms) e.agreeToTerms = 'You must agree to terms';
+    // Terms validation
+    if (!data.agreeToTerms) e.agreeToTerms = '✅ You must agree to the terms and conditions';
 
     return e;
   };
@@ -71,33 +88,37 @@ const Signup = () => {
     e.preventDefault();
     const validationErrors = validate(formData);
     setErrors(validationErrors);
-    if (Object.keys(validationErrors).length > 0) return;
     
-    setIsSubmitting(true);
+    if (Object.keys(validationErrors).length > 0) {
+      toast.error('❌ Please fix the errors below');
+      return;
+    }
+    
     try {
       const payload = {
         firstName: sanitizeInput(formData.firstName),
         lastName: sanitizeInput(formData.lastName),
-        email: sanitizeInput(formData.email),
-        password: sanitizeInput(formData.password),
+        email: sanitizeInput(formData.email).toLowerCase(),
+        password: formData.password, // Don't sanitize password
         country: sanitizeInput(formData.country),
         agreeToTerms: !!formData.agreeToTerms
       };
 
-      await registerUser(payload);
+      await register(payload);
+      toast.success('🎉 Account created successfully! Welcome to DocuFlow Pro!');
       navigate('/login');
     } catch (err) {
-      if (err.data?.errors) {
+      if (err.response?.data?.errors) {
         const serverErrors = {};
-        err.data.errors.forEach((error) => {
-          serverErrors[error.path] = error.msg;
+        err.response.data.errors.forEach((error) => {
+          serverErrors[error.path] = `❌ ${error.msg}`;
         });
         setErrors(serverErrors);
       } else {
-        setErrors({ server: err.data?.message || 'Registration failed' });
+        const errorMessage = err.response?.data?.message || 'Registration failed';
+        setErrors({ server: errorMessage });
+        toast.error(errorMessage);
       }
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -180,36 +201,72 @@ const Signup = () => {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                   Password
                 </label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  value={formData.password}
-                  onChange={handleChange}
-                  className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                  placeholder="Create a password"
-                />
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Lock className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    value={formData.password}
+                    onChange={handleChange}
+                    className={`appearance-none relative block w-full pl-10 pr-10 py-3 border ${
+                      errors.password ? 'border-red-300' : 'border-gray-300'
+                    } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm transition-colors`}
+                    placeholder="Create a password"
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    ) : (
+                      <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    )}
+                  </button>
+                </div>
                 {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
               </div>
 
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
                   Confirm password
                 </label>
-                <input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type="password"
-                  required
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                  placeholder="Confirm your password"
-                />
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Lock className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    required
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    className={`appearance-none relative block w-full pl-10 pr-10 py-3 border ${
+                      errors.confirmPassword ? 'border-red-300' : 'border-gray-300'
+                    } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm transition-colors`}
+                    placeholder="Confirm your password"
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    ) : (
+                      <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    )}
+                  </button>
+                </div>
                 {errors.confirmPassword && <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>}
               </div>
               {/* Country select (kept) */}
@@ -257,10 +314,23 @@ const Signup = () => {
             <div>
               <button
                 type="submit"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
-                disabled={isSubmitting}
+                className="group relative w-full flex justify-center items-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={isLoading}
               >
-                {isSubmitting ? 'Creating account...' : 'Create account'}
+                {isLoading ? (
+                  <>
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Creating account...
+                  </>
+                ) : (
+                  <>
+                    <UserPlus className="w-5 h-5 mr-2" />
+                    Create account
+                  </>
+                )}
               </button>
             </div>
 

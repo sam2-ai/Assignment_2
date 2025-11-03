@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { loginUser } from '../services/backend';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { useAuth } from '../contexts/AuthContext';
+import { Eye, EyeOff, LogIn, Mail, Lock } from 'lucide-react';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -8,9 +10,12 @@ const Login = () => {
     password: '',
     rememberMe: false
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [serverError, setServerError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({});
+  
+  const { login, isLoading, error } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -18,80 +23,174 @@ const Login = () => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
+    // Clear errors when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    
+    // Email validation
+    if (!formData.email) {
+      newErrors.email = '📧 Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = '❌ Please enter a valid email address';
+    } else if (formData.email.length > 254) {
+      newErrors.email = '⚠️ Email address is too long';
+    }
+    
+    // Password validation
+    if (!formData.password) {
+      newErrors.password = '🔒 Password is required';
+    } else if (formData.password.length < 6) {
+      newErrors.password = '⚠️ Password must be at least 6 characters';
+    } else if (formData.password.length > 128) {
+      newErrors.password = '⚠️ Password is too long';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setServerError('');
-    setIsSubmitting(true);
+    
+    if (!validateForm()) {
+      toast.error('❌ Please fix the errors below');
+      return;
+    }
     
     try {
-      const result = await loginUser({ email: formData.email, password: formData.password });
-      localStorage.setItem('token', result.token);
-      navigate('/dashboard');
+      await login({ 
+        email: formData.email.trim().toLowerCase(), 
+        password: formData.password 
+      });
+      
+      toast.success('🎉 Welcome back! Login successful');
+      
+      // Redirect to the page they were trying to access or dashboard
+      const from = location.state?.from?.pathname || '/dashboard';
+      navigate(from, { replace: true });
     } catch (err) {
-      setServerError(err.data?.message || 'Login failed');
-    } finally {
-      setIsSubmitting(false);
+      const errorMessage = err.response?.data?.message || err.message || 'Login failed';
+      toast.error(`❌ ${errorMessage}`);
+      
+      // Set specific field errors if available
+      if (err.response?.data?.errors) {
+        setErrors(err.response.data.errors);
+      }
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
-        <div className="bg-white rounded-lg shadow-xl p-8">
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 border border-gray-100">
           <div className="text-center">
             <div className="flex flex-col items-center">
-              <div className="h-12 w-12 bg-gradient-to-r from-primary-500 to-primary-700 rounded-lg flex items-center justify-center">
-                <span className="text-blue-600 font-bold text-xl">D</span>
+              <div className="h-16 w-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <span className="text-white font-bold text-2xl">📚</span>
               </div>
-              <span className="mt-2 text-xl font-bold text-gray-900">
-                Document<span className="text-primary-600">Optimizer</span>
+              <span className="mt-3 text-2xl font-bold text-gray-900">
+                DocuFlow<span className="text-blue-600"> Pro</span>
               </span>
             </div>
-            <h2 className="mt-4 text-3xl font-extrabold text-gray-900">
-              Log in to your account
+            <h2 className="mt-6 text-3xl font-bold text-gray-900">
+              🔑 Welcome Back!
             </h2>
-            <p className="mt-2 text-sm text-gray-600">
-              Or{' '}
-              <Link to="/signup" className="font-medium text-blue-600 hover:text-blue-500 hover:underline">
-                create a new account
+            <p className="mt-2 text-gray-600">
+              Sign in to access your document dashboard
+            </p>
+            <p className="mt-2 text-sm text-gray-500">
+              Don't have an account?{' '}
+              <Link to="/signup" className="font-medium text-blue-600 hover:text-blue-500 hover:underline transition-colors">
+                ✨ Create one here
               </Link>
             </p>
           </div>
 
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-            {serverError && <p className="text-red-600 mb-2">{serverError}</p>}
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                  Email address
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                  placeholder="Enter your email"
-                />
+            {error && (
+              <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-center space-x-2">
+                <span className="text-red-500">❌</span>
+                <p className="text-red-700 text-sm font-medium">{error}</p>
               </div>
+            )}
+            
+            <div className="space-y-5">
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                  Password
+                <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                  📧 Email Address
                 </label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  value={formData.password}
-                  onChange={handleChange}
-                  className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                  placeholder="Enter your password"
-                />
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Mail className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={`appearance-none relative block w-full pl-12 pr-4 py-3 border-2 ${
+                      errors.email 
+                        ? 'border-red-300 focus:border-red-500 focus:ring-red-500' 
+                        : 'border-gray-200 focus:border-blue-500 focus:ring-blue-500'
+                    } placeholder-gray-400 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-opacity-50 sm:text-sm transition-all duration-200 bg-gray-50 focus:bg-white`}
+                    placeholder="your@email.com"
+                  />
+                </div>
+                {errors.email && (
+                  <div className="mt-2 flex items-center space-x-1">
+                    <p className="text-sm text-red-600 font-medium">{errors.email}</p>
+                  </div>
+                )}
+              </div>
+              
+              <div>
+                <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
+                  🔒 Password
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Lock className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    autoComplete="current-password"
+                    required
+                    value={formData.password}
+                    onChange={handleChange}
+                    className={`appearance-none relative block w-full pl-12 pr-12 py-3 border-2 ${
+                      errors.password 
+                        ? 'border-red-300 focus:border-red-500 focus:ring-red-500' 
+                        : 'border-gray-200 focus:border-blue-500 focus:ring-blue-500'
+                    } placeholder-gray-400 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-opacity-50 sm:text-sm transition-all duration-200 bg-gray-50 focus:bg-white`}
+                    placeholder="Enter your password"
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-4 flex items-center hover:bg-gray-100 rounded-r-xl transition-colors"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    ) : (
+                      <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    )}
+                  </button>
+                </div>
+                {errors.password && (
+                  <div className="mt-2 flex items-center space-x-1">
+                    <p className="text-sm text-red-600 font-medium">{errors.password}</p>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -103,16 +202,16 @@ const Login = () => {
                   type="checkbox"
                   checked={formData.rememberMe}
                   onChange={handleChange}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded transition-colors"
                 />
-                <label htmlFor="rememberMe" className="ml-2 block text-sm text-gray-900">
-                  Remember me
+                <label htmlFor="rememberMe" className="ml-3 block text-sm text-gray-700 font-medium">
+                  💾 Remember me
                 </label>
               </div>
 
               <div className="text-sm">
-                <Link to="/forgot-password" className="font-medium text-blue-600 hover:text-blue-500 hover:underline">
-                  Forgot your password?
+                <Link to="/forgot-password" className="font-medium text-blue-600 hover:text-blue-500 hover:underline transition-colors">
+                  🔑 Forgot password?
                 </Link>
               </div>
             </div>
@@ -120,10 +219,23 @@ const Login = () => {
             <div>
               <button
                 type="submit"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
-                disabled={isSubmitting}
+                className="group relative w-full flex justify-center items-center py-4 px-6 border border-transparent text-base font-semibold rounded-xl text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:scale-105"
+                disabled={isLoading}
               >
-                  {isSubmitting ? 'Signing in...' : 'Sign in'}
+                {isLoading ? (
+                  <>
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    ⏳ Signing you in...
+                  </>
+                ) : (
+                  <>
+                    <LogIn className="w-5 h-5 mr-2" />
+                    🚀 Sign In
+                  </>
+                )}
               </button>
             </div>
 
