@@ -32,7 +32,7 @@ router.post('/register', registrationValidators, async (req, res) => {
     if (existing) return res.status(409).json({ message: 'Email already registered' });
 
     // hash password
-    const saltRounds = 10;
+    const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS) || 12;
     const hashed = await bcrypt.hash(password, saltRounds);
 
     const user = new User({
@@ -46,10 +46,16 @@ router.post('/register', registrationValidators, async (req, res) => {
 
     await user.save();
 
-    // generate JWT token (keep secret in env in production)
+    // generate JWT token
     const jwtSecret = process.env.JWT_SECRET || 'dev-secret';
-    const tokenPayload = { id: user._id, email: user.email, name: user.firstName };
-    const token = jwt.sign(tokenPayload, jwtSecret, { expiresIn: '1h' });
+    const jwtExpiresIn = process.env.JWT_EXPIRES_IN || '24h';
+    const tokenPayload = { 
+      id: user._id, 
+      email: user.email, 
+      name: user.firstName,
+      iat: Math.floor(Date.now() / 1000)
+    };
+    const token = jwt.sign(tokenPayload, jwtSecret, { expiresIn: jwtExpiresIn });
 
     return res.status(201).json({ message: 'User registered', token });
   } catch (err) {
