@@ -72,37 +72,45 @@ const About = () => {
   ];
 
   return (
-  <div className="min-h-screen bg-blue-50">
-      {/* Hero Section */}
-        <div className="bg-gradient-to-br from-blue-100 via-blue-50 to-blue-200 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      {/* Hero Section with Background Image */}
+      <div className="relative bg-gradient-to-br from-blue-600 via-blue-500 to-blue-700 py-20 overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <img 
+            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=2000&q=80" 
+            alt="Team collaboration" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl">
-              About <span className="text-primary-600">DocumentOptimizer</span>
+            <h1 className="text-5xl font-extrabold text-white sm:text-6xl animate-fade-in">
+              About <span className="text-blue-200">DocumentOptimizer</span>
             </h1>
-            <p className="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="mt-6 text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
               We're on a mission to empower content creators, marketers, and professionals with intelligent AI tools that make writing better, faster, and more effective.
             </p>
           </div>
         </div>
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
       </div>
 
-      {/* Mission Section */}
-        <div className="bg-white py-16">
+      {/* Mission Section with Image */}
+      <div className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Mission</h2>
-              <p className="text-lg text-gray-600 mb-6">
+            <div className="order-2 lg:order-1">
+              <h2 className="text-4xl font-bold text-gray-900 mb-6">Our Mission</h2>
+              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
                 At DocumentOptimizer, we believe that great content should be accessible to everyone. Our AI-powered tools bridge the gap between human creativity and machine efficiency, helping you create content that resonates with your audience while maintaining authenticity and quality.
               </p>
-              <p className="text-lg text-gray-600 mb-6">
+              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
                 Whether you're a content creator looking to humanize AI-generated text, a marketer optimizing for SEO, or a professional improving document readability, our suite of tools is designed to enhance your workflow and amplify your impact.
               </p>
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-4 bg-blue-50 p-5 rounded-xl border-l-4 border-blue-500">
                 <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
-                    <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-14 h-14 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <svg className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   </div>
@@ -113,25 +121,32 @@ const About = () => {
                 </div>
               </div>
             </div>
-            <div className="mt-12 lg:mt-0">
-              <div className="bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl p-8 text-blue-600">
-                <h3 className="text-2xl font-bold mb-6">Our Impact</h3>
-                <div className="grid grid-cols-2 gap-6">
-                  <div className="text-center">
-                    <div className="text-3xl font-bold mb-2">1M+</div>
-                    <div className="text-primary-200">Documents Processed</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl font-bold mb-2">10K+</div>
-                    <div className="text-primary-200">Active Users</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl font-bold mb-2">99.9%</div>
-                    <div className="text-primary-200">Uptime</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl font-bold mb-2">24/7</div>
-                    <div className="text-primary-200">Support</div>
+            <div className="order-1 lg:order-2 mb-12 lg:mb-0">
+              <div className="relative">
+                <img 
+                  src="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=800&q=80" 
+                  alt="Team working together" 
+                  className="rounded-2xl shadow-2xl"
+                />
+                <div className="absolute -bottom-8 -left-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl p-8 text-white shadow-xl max-w-xs">
+                  <h3 className="text-2xl font-bold mb-4">Our Impact</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="text-center">
+                      <div className="text-3xl font-bold mb-1">1M+</div>
+                      <div className="text-blue-200 text-sm">Documents Processed</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold mb-1">10K+</div>
+                      <div className="text-blue-200 text-sm">Active Users</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold mb-1">99.9%</div>
+                      <div className="text-blue-200 text-sm">Uptime</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold mb-1">24/7</div>
+                      <div className="text-blue-200 text-sm">Support</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -140,23 +155,34 @@ const About = () => {
         </div>
       </div>
 
-      {/* Values Section */}
-        <div className="bg-blue-50 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Values</h2>
+      {/* Values Section with Background Image */}
+      <div className="relative bg-blue-50 py-20 overflow-hidden">
+        <div className="absolute inset-0 opacity-5">
+          <img 
+            src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=2000&q=80" 
+            alt="Values background" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Values</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               These core principles guide everything we do and shape how we build products for our users.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value) => (
-              <div key={value.title} className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
-                <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4 text-primary-600">
+            {values.map((value, index) => (
+              <div 
+                key={value.title} 
+                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-t-4 border-blue-500"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-6 text-white shadow-lg">
                   {value.icon}
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">{value.title}</h3>
-                <p className="text-gray-600">{value.description}</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{value.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{value.description}</p>
               </div>
             ))}
           </div>
@@ -164,55 +190,59 @@ const About = () => {
       </div>
 
       {/* Team Section */}
-        <div className="bg-white py-16">
+      <div className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Meet Our Team</h2>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Meet Our Team</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Our diverse team of AI researchers, engineers, and product experts is passionate about making AI accessible to everyone.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {team.map((member) => (
-              <div key={member.name} className="text-center">
-                <div className="relative mb-6">
+              <div key={member.name} className="group">
+                <div className="relative mb-6 overflow-hidden rounded-2xl">
                   <img
-                    className="w-32 h-32 rounded-full mx-auto object-cover"
+                    className="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-500"
                     src={member.image}
                     alt={member.name}
                   />
-                  <div className="absolute inset-0 w-32 h-32 rounded-full mx-auto bg-gradient-to-br from-primary-500/20 to-primary-700/20"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-blue-900/80 via-blue-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    <p className="text-sm leading-relaxed">{member.bio}</p>
+                  </div>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">{member.name}</h3>
-                <p className="text-primary-600 font-medium mb-3">{member.role}</p>
-                <p className="text-gray-600">{member.bio}</p>
+                <div className="text-center">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{member.name}</h3>
+                  <p className="text-blue-600 font-semibold text-lg">{member.role}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Timeline Section */}
-        <div className="bg-blue-50 py-16">
+      {/* Timeline Section with Images */}
+      <div className="relative bg-gradient-to-b from-blue-50 to-blue-100 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Journey</h2>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Journey</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               From a small startup to a trusted platform serving thousands of users worldwide.
             </p>
           </div>
           <div className="relative">
-            <div className="absolute left-1/2 transform -translate-x-px h-full w-0.5 bg-primary-200"></div>
-            <div className="space-y-12">
+            <div className="absolute left-1/2 transform -translate-x-px h-full w-1 bg-gradient-to-b from-blue-400 via-blue-500 to-blue-600"></div>
+            <div className="space-y-16">
               {milestones.map((milestone, index) => (
                 <div key={milestone.year} className={`relative flex items-center ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
-                  <div className={`w-1/2 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8 text-left'}`}>
-                    <div className="bg-white rounded-lg p-6 shadow-md">
-                      <div className="text-2xl font-bold text-primary-600 mb-2">{milestone.year}</div>
-                      <p className="text-gray-700">{milestone.event}</p>
+                  <div className={`w-1/2 ${index % 2 === 0 ? 'pr-12 text-right' : 'pl-12 text-left'}`}>
+                    <div className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-shadow duration-300 border-l-4 border-blue-500">
+                      <div className="text-3xl font-bold text-blue-600 mb-3">{milestone.year}</div>
+                      <p className="text-gray-700 text-lg leading-relaxed">{milestone.event}</p>
                     </div>
                   </div>
-                  <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary-500 rounded-full border-4 border-blue-600 shadow"></div>
+                  <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-blue-600 rounded-full border-4 border-white shadow-lg z-10"></div>
                 </div>
               ))}
             </div>
@@ -220,25 +250,32 @@ const About = () => {
         </div>
       </div>
 
-      {/* CTA Section */}
-        <div className="bg-gradient-to-br from-blue-100 via-blue-50 to-blue-200 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-blue-600 mb-4">
+      {/* CTA Section with Background Image */}
+      <div className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 py-20 overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <img 
+            src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=2000&q=80" 
+            alt="CTA background" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-4xl font-bold text-white mb-6">
             Ready to Transform Your Content?
           </h2>
-          <p className="text-xl text-primary-200 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto leading-relaxed">
             Join thousands of professionals who trust DocumentOptimizer to enhance their content and streamline their workflow.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <a
               href="/services"
-              className="inline-flex items-center justify-center px-8 py-3 bg-white text-primary-600 font-medium rounded-lg hover:bg-primary-50 transition-colors duration-200 shadow-lg"
+              className="inline-flex items-center justify-center px-10 py-4 bg-white text-blue-600 font-semibold rounded-xl hover:bg-blue-50 transform hover:scale-105 transition-all duration-200 shadow-2xl"
             >
               Explore Our Services
             </a>
             <a
               href="/contact"
-              className="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-blue-600 font-medium rounded-lg hover:bg-white hover:text-primary-600 transition-colors duration-200"
+              className="inline-flex items-center justify-center px-10 py-4 border-2 border-white text-white font-semibold rounded-xl hover:bg-white hover:text-blue-600 transform hover:scale-105 transition-all duration-200"
             >
               Get in Touch
             </a>

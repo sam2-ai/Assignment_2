@@ -91,7 +91,7 @@ const HealthBadge = () => {
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
-          className="mt-2 p-3 bg-white rounded-xl border border-gray-200 shadow-sm"
+          className="absolute top-full mt-2 right-0 p-3 bg-white rounded-xl border border-gray-200 shadow-lg z-50 min-w-[250px]"
         >
           <div className="space-y-2">
             <div className="flex items-center justify-between text-sm">

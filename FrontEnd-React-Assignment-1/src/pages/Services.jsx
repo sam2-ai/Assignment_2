@@ -74,42 +74,65 @@ const Services = () => {
   ];
 
   return (
-  <div className="min-h-screen bg-blue-50 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-  <div className="bg-blue-100 rounded-xl shadow-lg p-8 text-center">
-          <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl">
-            Our <span className="text-primary-600">Services</span>
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      {/* Hero Section with Background Image */}
+      <div className="relative bg-gradient-to-br from-blue-600 via-blue-500 to-blue-700 py-20 overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <img 
+            src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=2000&q=80" 
+            alt="Services background" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-5xl font-extrabold text-white sm:text-6xl mb-6">
+            Our Services
           </h1>
-          <p className="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
             Comprehensive AI-powered tools to optimize, analyze, and enhance your written content for maximum impact and engagement.
           </p>
         </div>
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16">
 
         {/* Services Grid */}
-  <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
-          {services.map((service) => (
-  <div key={service.id} className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-              <div className="p-8">
-                <div className="flex items-center mb-6">
-                  <div className="flex-shrink-0 w-16 h-16 bg-gradient-to-r from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-blue-600">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+          {services.map((service, index) => (
+            <div 
+              key={service.id} 
+              className="group bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border-t-4 border-blue-500 hover:-translate-y-2"
+            >
+              <div className="relative h-24 overflow-hidden bg-blue-200">
+                <img 
+                  src={`https://images.unsplash.com/photo-${index === 0 ? '1677442136019-21780ecad995' : index === 1 ? '1451187580459-43490279c0fa' : index === 2 ? '1551288049-bebda4e38f71' : '1562577309-4932fdd64cd1'}?auto=format&fit=crop&w=800&q=80`}
+                  alt={service.title}
+                  className="w-full h-full object-cover opacity-20 group-hover:opacity-30 transition-opacity duration-300"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center text-white transform group-hover:scale-110 transition-transform duration-300">
                     {service.icon}
                   </div>
-                  <div className="ml-4">
-                    <h3 className="text-2xl font-bold text-gray-900">{service.title}</h3>
-                  </div>
                 </div>
+              </div>
+              
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">{service.title}</h3>
                 
                 <p className="text-gray-600 mb-6 leading-relaxed">
                   {service.description}
                 </p>
 
                 <div className="mb-8">
-                  <h4 className="text-lg font-semibold text-gray-900 mb-3">Key Features:</h4>
-                  <ul className="space-y-2">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <span className="w-1 h-5 bg-blue-500 mr-2"></span>
+                    Key Features
+                  </h4>
+                  <ul className="space-y-3">
                     {service.features.map((feature) => (
                       <li key={feature} className="flex items-center">
-                        <svg className="w-5 h-5 text-primary-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-5 h-5 text-blue-600 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                         <span className="text-gray-700">{feature}</span>
@@ -120,7 +143,7 @@ const Services = () => {
 
                 <Link
                   to={service.link}
-                  className="inline-flex items-center justify-center w-full px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-700 text-blue-600 font-medium rounded-lg hover:from-primary-600 hover:to-primary-800 transition-all duration-200 shadow-md hover:shadow-lg"
+                  className="inline-flex items-center justify-center w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200 shadow-lg"
                 >
                   Try {service.title}
                   <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -132,69 +155,85 @@ const Services = () => {
           ))}
         </div>
 
-        {/* Why Choose our Section */}
-  <div className="mt-20 bg-gradient-to-br from-blue-100 via-blue-50 to-blue-200 rounded-xl shadow-lg p-8 lg:p-12">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Why Choose Our Services?
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Our AI-powered tools are designed with professionals in mind, offering accuracy, speed, and reliability.
-            </p>
+        {/* Why Choose Section with Image */}
+        <div className="relative bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl shadow-2xl overflow-hidden mb-20">
+          <div className="absolute right-0 top-0 w-1/2 h-full opacity-10">
+            <img 
+              src="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1000&q=80" 
+              alt="Why choose us" 
+              className="w-full h-full object-cover"
+            />
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Lightning Fast</h3>
-              <p className="text-gray-600">Process your content in seconds with our optimized AI algorithms and cloud infrastructure.</p>
+          <div className="relative p-8 lg:p-16">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                Why Choose Our Services?
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Our AI-powered tools are designed with professionals in mind, offering accuracy, speed, and reliability.
+              </p>
             </div>
 
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                  <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Lightning Fast</h3>
+                <p className="text-gray-600 leading-relaxed">Process your content in seconds with our optimized AI algorithms and cloud infrastructure.</p>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Highly Accurate</h3>
-              <p className="text-gray-600">Advanced machine learning models trained on millions of documents for precise analysis.</p>
-            </div>
 
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
+              <div className="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                  <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Highly Accurate</h3>
+                <p className="text-gray-600 leading-relaxed">Advanced machine learning models trained on millions of documents for precise analysis.</p>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Secure & Private</h3>
-              <p className="text-gray-600">Your content is processed securely and never stored on our servers for complete privacy.</p>
+
+              <div className="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                  <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Secure & Private</h3>
+                <p className="text-gray-600 leading-relaxed">Your content is processed securely and never stored on our servers for complete privacy.</p>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* CTA Section */}
-        <div className="mt-16 text-center">
-          <div className="bg-gradient-to-br from-blue-100 via-blue-50 to-blue-200 rounded-xl p-8 lg:p-12">
-            <h2 className="text-3xl font-bold text-blue-600 mb-4">
+        {/* CTA Section with Background Image */}
+        <div className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 rounded-3xl overflow-hidden shadow-2xl mb-18">
+          <div className="absolute inset-0 opacity-10">
+            <img 
+              src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=2000&q=80" 
+              alt="CTA background" 
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="relative p-8 lg:p-16 text-center">
+            <h2 className="text-4xl font-bold text-white mb-6">
               Ready to Optimize Your Content?
             </h2>
-            <p className="text-xl text-primary-200 mb-8 max-w-2xl mx-auto">
+            <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto leading-relaxed">
               Join thousands of content creators, marketers, and professionals who trust our AI-powered tools.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link
                 to="/services/humanizer"
-                className="inline-flex items-center justify-center px-8 py-3 bg-white text-primary-600 font-medium rounded-lg hover:bg-primary-50 transition-colors duration-200 shadow-lg"
+                className="inline-flex items-center justify-center px-10 py-4 bg-white text-blue-600 font-semibold rounded-xl hover:bg-blue-50 transform hover:scale-105 transition-all duration-200 shadow-2xl"
               >
                 Start with AI Humanizer
               </Link>
               <Link
                 to="/contact"
-                className="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-blue-600 font-medium rounded-lg hover:bg-white hover:text-primary-600 transition-colors duration-200"
+                className="inline-flex items-center justify-center px-10 py-4 border-2 border-white text-white font-semibold rounded-xl hover:bg-white hover:text-blue-600 transform hover:scale-105 transition-all duration-200"
               >
                 Contact Sales
               </Link>

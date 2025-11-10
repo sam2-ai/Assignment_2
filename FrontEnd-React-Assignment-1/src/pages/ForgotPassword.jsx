@@ -56,11 +56,13 @@ const ForgotPassword = () => {
         <div className="bg-white rounded-lg shadow-xl p-8">
           <div className="text-center">
             <div className="flex flex-col items-center">
-              <div className="h-12 w-12 bg-gradient-to-r from-primary-500 to-primary-700 rounded-lg flex items-center justify-center">
-                <span className="text-blue-600 font-bold text-xl">D</span>
+              <div className="h-16 w-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
               </div>
-              <span className="mt-2 text-xl font-bold text-gray-900">
-                Document<span className="text-primary-600">Optimizer</span>
+              <span className="mt-3 text-2xl font-bold text-gray-900">
+                Document Optimizer
               </span>
             </div>
             <h2 className="mt-4 text-3xl font-extrabold text-gray-900">

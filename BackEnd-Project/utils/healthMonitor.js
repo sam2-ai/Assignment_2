@@ -88,7 +88,11 @@ class HealthMonitor {
       timestamp: new Date().toISOString(),
       uptime: systemMetrics.uptime,
       services: {
-        database: databaseStatus,
+        database: {
+          status: databaseStatus.status,
+          state: databaseStatus.state,
+          message: databaseStatus.message
+        },
         server: {
           status: 'healthy',
           message: 'Server is running'

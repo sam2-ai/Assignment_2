@@ -91,14 +91,16 @@ const Login = () => {
           <div className="text-center">
             <div className="flex flex-col items-center">
               <div className="h-16 w-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
-                <span className="text-white font-bold text-2xl">📚</span>
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
               </div>
               <span className="mt-3 text-2xl font-bold text-gray-900">
                 Document Optimizer
               </span>
             </div>
             <h2 className="mt-6 text-3xl font-bold text-gray-900">
-              🔑 Welcome Back!
+               Welcome Back!
             </h2>
             <p className="mt-2 text-gray-600">
               Sign in to access your document dashboard
@@ -122,7 +124,7 @@ const Login = () => {
             <div className="space-y-5">
               <div>
                 <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
-                  📧 Email Address
+                   Email Address
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -153,7 +155,7 @@ const Login = () => {
               
               <div>
                 <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
-                  🔒 Password
+                   Password
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
