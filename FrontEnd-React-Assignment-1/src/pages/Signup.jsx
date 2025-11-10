@@ -128,11 +128,11 @@ const Signup = () => {
         <div className="bg-white rounded-lg shadow-xl p-8">
           <div className="text-center">
             <div className="flex flex-col items-center">
-              <div className="h-12 w-12 bg-gradient-to-r from-primary-500 to-primary-700 rounded-lg flex items-center justify-center">
-                <span className="text-blue-600 font-bold text-xl">D</span>
+              <div className="h-16 w-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <span className="text-white font-bold text-2xl">📚</span>
               </div>
-              <span className="mt-2 text-xl font-bold text-gray-900">
-                Document<span className="text-primary-600">Optimizer</span>
+              <span className="mt-3 text-2xl font-bold text-gray-900">
+                Document Optimizer
               </span>
             </div>
             <h2 className="mt-4 text-3xl font-extrabold text-gray-900">
